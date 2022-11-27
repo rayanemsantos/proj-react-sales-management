@@ -1,0 +1,15 @@
+// Main
+$color-primary: '#00585E';
+$color-secondary: '#2B7D83';
+
+// Export SCSS
+:root {
+    --color-primary: #{$color-primary};
+    --color-secondary: #{$color-secondary};
+}
+
+// Export (JS)
+:export {
+    primary: $color-primary;
+    secondary: $color-secondary;
+}
