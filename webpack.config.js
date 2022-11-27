@@ -60,7 +60,7 @@ module.exports={
          * resolve the one with the extension listed first in the array and skip the rest. 
          * This is what enables users to leave off the extension when importing
          */
-        extensions: ['.js','.jsx','.json', '.css'] 
+        extensions: ['.js', '.ts', '.tsx', '.jsx','.json', '.css'] 
     },
     module:{
         /** "rules"
@@ -79,6 +79,11 @@ module.exports={
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
             },
+            {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                loader: 'ts-loader'
+            }            
         ]
     }
 }
