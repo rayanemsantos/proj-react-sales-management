@@ -6,8 +6,10 @@ import {
 import NavItems from './NavItems';
 import Header from '../header/Header';
 import './main-drawer.scss';
+import { useNavigate } from 'react-router-dom';
 
 const NavbarWrapper = () => {
+	const navigate = useNavigate();
 	const drawerWidth = 273;
 	const [open, setOpen] = useState(false);
 
@@ -19,7 +21,7 @@ const NavbarWrapper = () => {
 		<Box sx={{ flexGrow: 1 }}>
 			
 			<Header toggleDrawer={toggleDrawer}/>
-			
+
 			<SwipeableDrawer
 				anchor='left'
 				open={open}
@@ -33,7 +35,7 @@ const NavbarWrapper = () => {
 					className: 'main-drawer'
 				}}
 			>				
-				<NavItems/>										
+				<NavItems navigate={navigate} toggleDrawer={toggleDrawer}/>										
 			</SwipeableDrawer>			
 	  </Box>			
 	);

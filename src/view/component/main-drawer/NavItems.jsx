@@ -6,21 +6,27 @@ import {
 	ListItemText,
     IconButton
 } from '@mui/material';
-
 import { PointOfSale, ArrowForwardIos, Calculate } from '@mui/icons-material';
 
 import './list-item.scss';
 
-const NavItems = () => {
+const NavItems = ({ navigate, toggleDrawer }) => {
+    const goTo = (path) => {
+        toggleDrawer()
+        navigate(`${path}`)
+    };
+
     const routes = [
         {
             title: 'Vendas',
-            icon: <PointOfSale color='secondary'/>
+            icon: <PointOfSale color='secondary'/>,
+            path: '/sales'
 
         },
         {
             title: 'Comissões',
-            icon: <Calculate color='secondary'/>
+            icon: <Calculate color='secondary'/>,
+            path: '/comissions'
         }
     ];
 
@@ -30,7 +36,7 @@ const NavItems = () => {
                 button
                 key={listItem.title}
                 className='list-item'
-                onClick={() => null}
+                onClick={() => goTo(listItem.path)}
                 secondaryAction={
                     <IconButton edge="end" aria-label="push">
                         <ArrowForwardIos />
