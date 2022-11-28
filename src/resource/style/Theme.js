@@ -9,6 +9,7 @@ const palette = {
 	primary: { main: '#00585E' },
 	secondary: { main: '#2B7D83' },
 	default: { main: '#00585E' },
+	custom: { danger: '#BE0000'}
 }
 
 const theme = createTheme({ themeName, palette, components })

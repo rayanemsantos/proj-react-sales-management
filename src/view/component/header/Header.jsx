@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    Grid,
 	IconButton,
 	Toolbar,
 	Typography,
@@ -10,7 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HeaderNavBarBrand from './HeaderNavBarBrand';
 import './header.scss';
 
-const Header = ({toggleDrawer, currentHeaderTitle = 'Vendas'}) => {
+const Header = ({toggleDrawer, currentPage = 'Vendas'}) => {
 	return (
         <AppBar 
             position='absolute'
@@ -26,6 +25,7 @@ const Header = ({toggleDrawer, currentHeaderTitle = 'Vendas'}) => {
                 aria-label="menu"
                 sx={{ mr: 2 }}
                 onClick={toggleDrawer}
+                className='header-toggle-button'
             >
                 <MenuIcon color='primary'/>
             </IconButton>
@@ -37,8 +37,9 @@ const Header = ({toggleDrawer, currentHeaderTitle = 'Vendas'}) => {
                 component="div" 
                 sx={{ flexGrow: 1, textAlign: 'center', fontWeight: 'bold' }} 
                 color='primary'
+                className='header-title'
             >
-                {currentHeaderTitle}
+                {currentPage}
             </Typography>
 
         </Toolbar>
