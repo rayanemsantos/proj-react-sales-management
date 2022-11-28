@@ -82,6 +82,7 @@ const SalesList = () => {
                         {buildTableCell(rowProduct.quantity, 'center', styleRow)}
                         {buildTableCell(formatPrice(rowProduct.product.unit_price), 'center', styleRow)}
                         {buildTableCell(formatPrice(rowProduct.total), 'center', styleRow)}
+                        {buildTableCell(`${formatDecimal(rowProduct._commission_applied)}%`, 'center', styleRow)}
                         {buildTableCell(formatPrice(rowProduct.total_commission), 'center', styleRow)}
                     </TableRow>            
                     ))}
