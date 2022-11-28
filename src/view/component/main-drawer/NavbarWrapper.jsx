@@ -12,6 +12,7 @@ const NavbarWrapper = () => {
 	const navigate = useNavigate();
 	const drawerWidth = 273;
 	const [open, setOpen] = useState(false);
+	const [currentPage, setCurrentPage] = useState('');
 
     const toggleDrawer = () => {
 		setOpen(!open);
@@ -20,11 +21,12 @@ const NavbarWrapper = () => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			
-			<Header toggleDrawer={toggleDrawer}/>
+			<Header toggleDrawer={toggleDrawer} currentPage={currentPage}/>
 
 			<SwipeableDrawer
 				anchor='left'
 				open={open}
+				onOpen={null}
 				onClose={toggleDrawer}
 				BackdropProps={{ invisible: true }}
 				PaperProps={{
@@ -35,7 +37,11 @@ const NavbarWrapper = () => {
 					className: 'main-drawer'
 				}}
 			>				
-				<NavItems navigate={navigate} toggleDrawer={toggleDrawer}/>										
+				<NavItems 
+					navigate={navigate} 
+					toggleDrawer={toggleDrawer}
+					onChangePage={setCurrentPage}
+				/>										
 			</SwipeableDrawer>			
 	  </Box>			
 	);
