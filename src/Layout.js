@@ -1,12 +1,12 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+import NavbarWrapper from './view/component/main-drawer/NavbarWrapper';
 
 function Layout(props) {
 	const { children  } = props;
 
 	return (
             <div>
-                <Button variant="contained">Contained</Button>
+                <NavbarWrapper/>
                 {children}
             </div>
 	);

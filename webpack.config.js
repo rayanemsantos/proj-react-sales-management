@@ -77,7 +77,7 @@ module.exports={
             },
             {
                 test: /\.css$/,
-                use: ['css-loader'],
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.scss$/,
@@ -97,7 +97,18 @@ module.exports={
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 loader: 'ts-loader'
-            }         
+            },
+            {
+                test: /\.(png|jp(e*)g|svg|gif|ico)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'images/[hash]-[name].[ext]',
+                        },
+                    },
+                ],
+            },                   
         ]
     }
 }

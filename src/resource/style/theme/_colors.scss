@@ -2,10 +2,28 @@
 $color-primary: '#00585E';
 $color-secondary: '#2B7D83';
 
+$bg-header: '#F0F0F0';
+$color-bg-main-drawer: '#F2F2F2';
+$color-background: '#F8F8F8';
+$color-lighter: '#FFF';
+$color-lighter-dark: '#DADADA';
+
 // Export SCSS
 :root {
     --color-primary: #{$color-primary};
     --color-secondary: #{$color-secondary};
+    --color-lighter: #{$color-lighter};
+
+    //header
+    --main-header-bg: #{$bg-header};
+
+    // common 
+    --color-background: #{$color-lighter};
+
+    // drawer
+    --color-bg-main-drawer: #{$color-bg-main-drawer};
+    --color-bg-drawer-item: #{$color-lighter};
+    --color-button-drawer-item: #{$color-lighter-dark};
 }
 
 // Export (JS)
