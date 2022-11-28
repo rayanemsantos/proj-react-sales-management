@@ -38,6 +38,7 @@
     "@mui/icons-material": "^5.10.15",
     "@mui/material": "^5.10.15",
     "css-loader": "^6.7.1",
+    "date-fns": "^2.29.3",
     "file-loader": "^6.2.0",
     "path": "^0.12.7",
     "react": "^17.0.2",
