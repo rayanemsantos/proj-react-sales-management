@@ -10,22 +10,23 @@ import { PointOfSale, ArrowForwardIos, Calculate } from '@mui/icons-material';
 
 import './list-item.scss';
 
-const NavItems = ({navigate}) => {
+const NavItems = ({ navigate, toggleDrawer }) => {
     const goTo = (path) => {
-        navigate(`#/${path}`)
+        toggleDrawer()
+        navigate(`${path}`)
     };
 
     const routes = [
         {
             title: 'Vendas',
             icon: <PointOfSale color='secondary'/>,
-            path: 'sales'
+            path: '/sales'
 
         },
         {
             title: 'Comissões',
             icon: <Calculate color='secondary'/>,
-            path: 'comissions'
+            path: '/comissions'
         }
     ];
 

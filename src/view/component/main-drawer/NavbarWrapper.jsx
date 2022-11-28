@@ -35,7 +35,7 @@ const NavbarWrapper = () => {
 					className: 'main-drawer'
 				}}
 			>				
-				<NavItems navigate={navigate}/>										
+				<NavItems navigate={navigate} toggleDrawer={toggleDrawer}/>										
 			</SwipeableDrawer>			
 	  </Box>			
 	);
