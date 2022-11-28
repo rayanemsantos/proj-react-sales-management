@@ -7,7 +7,7 @@ const RoutesManage = () => {
 		{
 			path: '/',
 			exact: true,
-			component: <></>,
+			component: <Sales/>,
 		},
 		{
 			path: '/sales',
