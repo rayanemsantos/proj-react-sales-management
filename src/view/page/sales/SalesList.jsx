@@ -97,7 +97,7 @@ const SalesList = () => {
                     <TableCell align="left">{row.access_key}</TableCell>
                     <TableCell align="left">{row.customer.name}</TableCell>
                     <TableCell align="left">{row.seller.name}</TableCell>
-                    <TableCell align="center">{formatDate(new Date(row.register_datetime), 'dd/MM/yyyy HH:MM')}</TableCell>
+                    <TableCell align="center">{formatDate(new Date(row.register_datetime), 'dd/MM/yyyy HH:mm')}</TableCell>
                     <TableCell align="center">{formatPrice(row.total)}</TableCell>
                     <TableCell align="center">
                         <Button variant="text" onClick={() => setOpen(!open)}>Ver mais</Button>
