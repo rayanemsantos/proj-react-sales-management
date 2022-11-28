@@ -28,3 +28,7 @@ p {
 .absolute {
     position: absolute !important;
 }
+
+.offset-header-height {
+    margin-top: $header-height;
+}
