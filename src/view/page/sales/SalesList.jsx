@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Collapse, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { fetchSales } from '../../../services/sales.service';
+import { fetchSales, deleteSale } from '../../../services/sales.service';
 import { formatPrice, formatDecimal } from '../../../application/util/moneyUtil';
 import dateUtil from '../../../application/util/dateUtil';
+import SalesDialog from '../../component/dialog/Dialog';
 
 const SalesList = () => {
     const [items, setItems] = useState([]);
+    const [openConfirm, setOpenConfirm] = useState({open: false, id: null});
 
+    
     const formatDate = dateUtil.formatDatePtBr;
 
     function getSales(){
@@ -16,6 +19,14 @@ const SalesList = () => {
             setItems(res);
         })
     };
+
+    function removeSale(id){
+        deleteSale(id).then((res) => {
+            setItems(res);
+        })
+    };
+
+    
     useEffect(() => {
         getSales();
         return () => {
@@ -41,25 +52,25 @@ const SalesList = () => {
         { title: 'Comissão', align: 'center' },
     ];
 
-    const renderHeaderTitles = ({title, align = 'left'}) => {
-        return (
-            <TableCell sx={{border: 0}} align={align}>{title}</TableCell>
-        );
+    const buildTableCell = (text = '', align = 'left', style = {}) => {
+        return <TableCell sx={style} align={align}>{text}</TableCell>
     };
 
     function RowNested(props) {
         const { row } = props;
         const sumQuantity = row.sale_products.map((_sp) => _sp.quantity).reduce(
-            (accumulator, currentValue) => accumulator + currentValue,
-            0
+            (accumulator, currentValue) => accumulator + currentValue, 0
         );        
+        const styleRow = { border: 0 };
+        const styleRowTotal = { border: 0, fontWeight: 600 };
+
         return (
             <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         {productHeaders.map((_header) => {
                             return (
-                                renderHeaderTitles(_header)
+                                buildTableCell(_header.title, _header.align, {border: 0})
                             )
                         })}
                     </TableRow>
@@ -67,21 +78,20 @@ const SalesList = () => {
                 <TableBody>
                     {row.sale_products.map((rowProduct, index) => (
                     <TableRow key={index}>
-                        <TableCell sx={{border: 0}} align="left">{rowProduct.id} - {rowProduct.product.description}</TableCell>
-                        <TableCell sx={{border: 0}} align="center">{rowProduct.quantity}</TableCell>
-                        <TableCell sx={{border: 0}} align="center">{formatPrice(rowProduct.product.unit_price)}</TableCell>
-                        <TableCell sx={{border: 0}} align="center">{formatPrice(rowProduct.total)}</TableCell>
-                        <TableCell sx={{border: 0}} align="center">{formatDecimal(rowProduct._commission_applied)}%</TableCell>
-                        <TableCell sx={{border: 0}} align="center">{formatPrice(rowProduct.total_commission)}</TableCell>
+                        {buildTableCell(`${rowProduct.id} - ${rowProduct.product.description}`, '', styleRow)}
+                        {buildTableCell(rowProduct.quantity, 'center', styleRow)}
+                        {buildTableCell(formatPrice(rowProduct.product.unit_price), 'center', styleRow)}
+                        {buildTableCell(formatPrice(rowProduct.total), 'center', styleRow)}
+                        {buildTableCell(formatPrice(rowProduct.total_commission), 'center', styleRow)}
                     </TableRow>            
                     ))}
                     <TableRow sx={{paddingTop: 5}}>
-                        <TableCell sx={{border: 0, fontWeight: 600}} align="left">Total da venda</TableCell>
-                        <TableCell sx={{border: 0, fontWeight: 600}} align="center">{sumQuantity}</TableCell>
-                        <TableCell sx={{border: 0, fontWeight: 600}} align="center"></TableCell>
-                        <TableCell sx={{border: 0, fontWeight: 600}} align="center">{formatPrice(row.total)}</TableCell>
-                        <TableCell sx={{border: 0, fontWeight: 600}} align="center"></TableCell>
-                        <TableCell sx={{border: 0, fontWeight: 600}} align="center">{formatPrice(row.total_commission)}</TableCell>
+                        {buildTableCell('Total da venda', '', styleRowTotal)}
+                        {buildTableCell(sumQuantity, 'center', styleRowTotal)}
+                        {buildTableCell('', '', styleRowTotal)}
+                        {buildTableCell(formatPrice(row.total), 'center', styleRowTotal)}
+                        {buildTableCell('', '', styleRowTotal)}
+                        {buildTableCell(formatPrice(row.total_commission), 'center', styleRowTotal)}
                     </TableRow>
                 </TableBody>
             </Table>
@@ -104,7 +114,7 @@ const SalesList = () => {
                         <IconButton aria-label="edit" color="primary">
                             <EditIcon />
                         </IconButton>
-                        <IconButton aria-label="delete" color="primary">
+                        <IconButton aria-label="delete" color="primary" onClick={() => setOpenConfirm({open: true, id: row.id})}>
                             <DeleteIcon />
                         </IconButton>                                                                
                     </TableCell>
@@ -119,14 +129,35 @@ const SalesList = () => {
             </React.Fragment>          
         )
     };
+
+    async function handleConfirmDelete(){
+        await removeSale(openConfirm.id);
+        handleCloseDialog();
+        getSales();
+    };
+
+    function handleCloseDialog(){
+        setOpenConfirm(false);
+    };
+
     return (
+        <>
+        <SalesDialog 
+            title='Remover Venda' 
+            description='Deseja remover esta venda?'
+            closeTitle='Não'
+            confirmTitle='Sim'
+            open={openConfirm.open}
+            onClose={handleCloseDialog}
+            handleConfirm={handleConfirmDelete}
+        />
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         {headers.map((_header) => {
                             return (
-                                renderHeaderTitles(_header)
+                                buildTableCell(_header.title, _header.align)
                             )
                         })}
                     </TableRow>
@@ -138,6 +169,7 @@ const SalesList = () => {
                 </TableBody>
             </Table>
         </TableContainer>
+        </>
     );
 }
 
