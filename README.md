@@ -34,3 +34,10 @@ Comissões
 - Lista de vendedores e o valor total de comissões a pagar para cada vendedor, com base nas vendas do período.
 - Filtro por data
 - Total geral de comissões
+
+## Próximos passos
+
+- Implementar autenticação de login
+- Implementar testes
+- Implementar ícones customizáveis
+- Implementar pesquisa, paginação e filtros.
