@@ -10,12 +10,12 @@ import { PointOfSale, ArrowForwardIos, Calculate } from '@mui/icons-material';
 
 import './list-item.scss';
 
-const NavItems = ({ navigate, toggleDrawer, onChangePage }) => {
+const NavItems = ({ router, toggleDrawer, onChangePage }) => {
     
     const goTo = (item) => {
         toggleDrawer()
         onChangePage(item.title)
-        navigate(`${item.path}`)
+        router.goToPage(`${item.path}`)
     };
 
     const routes = [
