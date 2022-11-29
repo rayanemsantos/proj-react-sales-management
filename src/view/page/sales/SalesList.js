@@ -104,7 +104,7 @@ const SalesList = () => {
         return (
             <React.Fragment>
                 <TableRow key={index}>
-                    <TableCell align="left">{row.access_key}</TableCell>
+                    <TableCell align="left" style={{overflow: "hidden", textOverflow: "ellipsis", maxWidth: '1rem'}}>{row.access_key}</TableCell>
                     <TableCell align="left">{row.customer.name}</TableCell>
                     <TableCell align="left">{row.seller.name}</TableCell>
                     <TableCell align="center">{formatDate(new Date(row.register_datetime), 'dd/MM/yyyy HH:mm')}</TableCell>
