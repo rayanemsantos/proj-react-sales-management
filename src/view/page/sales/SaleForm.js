@@ -16,13 +16,47 @@ import useRouter from '../../../application/hook/useRouter';
 
 import './sales.scss'
 import useIsMount from '../../../application/hook/useIsMount';
+import SalesTable from '../../component/table/Table';
 
 function SaleForm() {
+    const styleRowProduct = { border: 0 };
     const router = useRouter();
     const isMount = useIsMount();
     const { id } = router.params;
     const isEditing = id !== 'new';
     const formatDate = dateUtil.formatDate;
+
+    const headerList = [
+        {
+            field: 'description',
+            nested: 'product.description',
+            align: 'left',
+            label: 'Produtos/Serviço',
+            style: styleRowProduct
+        },
+        {
+            field: 'quantity',
+            align: 'center',
+            label: 'Quantidade',
+            style: styleRowProduct
+        },  
+        {
+            field: 'unit_price',
+            nested: 'product.unit_price',
+            align: 'center',
+            label: 'Preço unitário',
+            format: 'price',
+            style: styleRowProduct
+        }, 
+        {
+            field: 'total',
+            align: 'center',
+            label: 'Total',
+            format: 'price',
+            style: styleRowProduct
+        }, 
+        { label: '', align: 'center', style: styleRowProduct },                       
+    ];
 
     const initialCurrentProduct = {
         product: null,
@@ -75,44 +109,6 @@ function SaleForm() {
         { title: 'Total', align: 'center' },
         { title: '', align: 'center' },
     ];
-
-    function TableProducts(props) {
-        const { callbackDelete } = props;
-        const styleRow = { border: 0 };
-
-        const buildTableCell = (text = '', align = 'left', style = {}) => {
-            return <TableCell sx={style} align={align}>{text}</TableCell>
-        };
-
-        return (
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            {productHeaders.map((_header) => {
-                                return (
-                                    buildTableCell(_header.title, _header.align, {border: 0})
-                                )
-                            })}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {form.products.map((rowProduct, index) => (
-                        <TableRow key={index}>
-                            {buildTableCell(`${rowProduct.product.description}`, '', styleRow)}
-                            {buildTableCell(rowProduct.quantity, 'center', styleRow)}
-                            {buildTableCell(formatPrice(rowProduct.product.unit_price), 'center', styleRow)}
-                            {buildTableCell(formatPrice(rowProduct.total), 'center', styleRow)}
-                            <IconButton aria-label="delete" color="primary" onClick={() => callbackDelete(index)}>
-                                <DeleteIcon />
-                            </IconButton>                               
-                        </TableRow>            
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
-    };
 
     function handleChange(field, value){
         setForm((prev) => { return {...prev, [field]: value} });
@@ -244,7 +240,15 @@ function SaleForm() {
                         </div>
                     </div>
 
-                    <TableProducts callbackDelete={handleRemoveProduct}/>
+                    {
+                        form && (
+                            <SalesTable 
+                                headers={headerList} 
+                                data={form.products}
+                                callbackDelete={handleRemoveProduct}
+                            />       
+                        )
+                    }
                 </div>
 
                 <div className='col-md-1'>
