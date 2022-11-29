@@ -22,15 +22,11 @@ export function del(resource){
     let url = `${URL_BASE}${resource}`
     return fetch(url, {
       method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
     }).then(async function (response) {
-      let resData = await response.json();
       if (!response.ok) {
-        return Promise.reject(resData);
+        return Promise.reject(response);
       }    
-      return resData;
+      return response;
     })
   }
 
