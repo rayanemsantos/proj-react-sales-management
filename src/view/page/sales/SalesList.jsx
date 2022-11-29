@@ -8,8 +8,9 @@ import dateUtil from '../../../application/util/dateUtil';
 import SalesDialog from '../../component/dialog/Dialog';
 
 const SalesList = () => {
+    const dialogInitialState = {open: false, id: null};
     const [items, setItems] = useState([]);
-    const [openConfirm, setOpenConfirm] = useState({open: false, id: null});
+    const [openConfirm, setOpenConfirm] = useState(dialogInitialState);
 
     
     const formatDate = dateUtil.formatDatePtBr;
@@ -21,9 +22,7 @@ const SalesList = () => {
     };
 
     function removeSale(id){
-        deleteSale(id).then((res) => {
-            setItems(res);
-        })
+        deleteSale(id);
     };
 
     
@@ -138,7 +137,7 @@ const SalesList = () => {
     };
 
     function handleCloseDialog(){
-        setOpenConfirm(false);
+        setOpenConfirm(dialogInitialState);
     };
 
     return (
