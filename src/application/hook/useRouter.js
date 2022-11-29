@@ -3,11 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export default function useRouter() {
     const params = useParams();
-    // const location = useLocation();
-    // const history = useHistory();
-    // const match = useRouteMatch();
     const navigate = useNavigate();
-
+    
     return useMemo(() => {
 
         const goToPage = (route) => {
@@ -16,6 +13,7 @@ export default function useRouter() {
 
         return {
             goToPage,
+            params
         };
     }, [params, navigate]);
 }
