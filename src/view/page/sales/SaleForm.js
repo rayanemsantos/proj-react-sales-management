@@ -100,14 +100,6 @@ function SaleForm() {
         }
     }, [router.params]);
 
-    const productHeaders = [
-        { title: 'Produtos/Serviço' },
-        { title: 'Quantidade', align: 'center' },
-        { title: 'Preço unitário', align: 'center' },
-        { title: 'Total', align: 'center' },
-        { title: '', align: 'center' },
-    ];
-
     function handleChange(field, value){
         setForm((prev) => { return {...prev, [field]: value} });
     };   
