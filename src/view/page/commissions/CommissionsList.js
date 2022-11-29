@@ -1,15 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Box,  Button,  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material';
+import { Box,  Button, Typography} from '@mui/material';
 import { fetchSalesCommissions } from '../../../services/sales.service';
-import { formatPrice } from '../../../application/util/moneyUtil';
 import dateUtil from '../../../application/util/dateUtil';
 import Datepicker from '../../component/input-datepicker/Datepicker';
 import { Search } from '@mui/icons-material';
+import SalesTable from '../../component/table/Table';
 
 const CommissionsList = () => {
+    const headerList = [
+        {
+            field: 'seller',
+            align: 'left',
+            label: 'Vendedor',
+        },
+        {
+            field: 'total_sales',
+            align: 'center',
+            label: 'Total de Vendas',
+        },  
+        {
+            field: 'total_commission',
+            align: 'center',
+            label: 'Total de Comissões',
+            format: 'price'
+        },                
+    ];
+
     const styleRowTotal = { border: 0, fontWeight: 600 };
     const formatDate = dateUtil.formatDate;
     const [data, setdata] = useState(null);
+    const [total, setTotal] = useState(0);
     const [init, setInit] = useState(new Date());
     const [end, setEnd] = useState(new Date());
 
@@ -19,7 +39,8 @@ const CommissionsList = () => {
         let endFormat = formatDate(end);
 
         fetchSalesCommissions(initFormat, endFormat).then((res) => {
-            setdata(res);
+            setdata(res.results);
+            setTotal(res.total);
         })
     };
     
@@ -29,30 +50,6 @@ const CommissionsList = () => {
             // cleanup
         };
     }, []);
-
-    const headers = [
-        // { title: 'Cód.' },
-        { title: 'Vendedor' },
-        { title: 'Total de Vendas', align: 'center' },
-        { title: 'Total de Comissões', align: 'center' },
-    ];
-
-    const buildTableCell = (text = '', align = 'left', style = {}) => {
-        return <TableCell sx={style} align={align}>{text}</TableCell>
-    };
-
-    function Row(props){
-        const { row, index } = props;
-        return (
-            <React.Fragment>
-                <TableRow key={index}>
-                    <TableCell align="left">{row.seller}</TableCell>
-                    <TableCell align="center">{row.total_sales}</TableCell>
-                    <TableCell align="center">{formatPrice(row.total_commission)}</TableCell>
-                </TableRow> 
-            </React.Fragment>          
-        )
-    };
 
     return (
         <Box     
@@ -93,34 +90,19 @@ const CommissionsList = () => {
                     </Button>
                 </div>
             </div>      
-
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            {headers.map((_header) => {
-                                return (
-                                    buildTableCell(_header.title, _header.align)
-                                )
-                            })}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data && data.results.map((row, index) => (
-                            <Row row={row} index={index}/>
-                        ))}
-                        {
-                            data && (
-                                <TableRow sx={{paddingTop: 5}}>
-                                    {buildTableCell('Total de Comissões do Período', '', styleRowTotal)}
-                                    {buildTableCell('', '', styleRowTotal)}
-                                    {buildTableCell(formatPrice(data.total), 'center', styleRowTotal)}
-                                </TableRow>   
-                            )
-                        }                     
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {
+                data && (
+                    <SalesTable 
+                        headers={headerList} 
+                        data={data}
+                        bottomRowList={[
+                            { value: 'Total de Comissões do Período', style: styleRowTotal },
+                            {value: '', style: styleRowTotal}, 
+                            { value: total, format: 'price', align: 'center', style: styleRowTotal }
+                        ]}
+                    />       
+                )
+            }
         </Box>
     );
 }
