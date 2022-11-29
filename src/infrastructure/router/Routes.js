@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import CommissionsList from '../../view/page/commissions/CommissionsList';
 import SaleForm from '../../view/page/sales/SaleForm';
 import Sales from '../../view/page/sales/Sales';
 
@@ -8,7 +9,7 @@ const RoutesManage = () => {
 		{
 			path: '/',
 			exact: true,
-			component: <SaleForm/>,
+			component: <Sales/>,
 		},			
 		{
 			path: '/sales',
@@ -23,7 +24,7 @@ const RoutesManage = () => {
 		{
 			path: '/commissions',
 			exact: true,
-			component: <></>,
+			component: <CommissionsList/>,
 		},
 	];
     return (
