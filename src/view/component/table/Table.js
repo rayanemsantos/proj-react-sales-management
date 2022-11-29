@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuid } from 'uuid';
 import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { formatPrice } from '../../../application/util/moneyUtil';
@@ -42,25 +43,23 @@ const SalesTable = (props) => {
     };
 
     const buildTableCell = (text = '', align = 'left', style = {}) => {
-        return <TableCell sx={style} align={align}>{text}</TableCell>
+        return <TableCell key={uuid()} sx={style} align={align}>{text}</TableCell>
     };
 
     function Row(props){
         const { row, index } = props;
         return (
-            <React.Fragment>
-                <TableRow key={index}>
-                    {headers.map((field) => {
-                        const { value, align, style } = getField(row, field);
-                        return buildTableCell(value, align, style)
-                    })}
-                    {callbackDelete ? (
-                        <IconButton aria-label="delete" color="primary" onClick={() => callbackDelete(index)}>
-                            <DeleteIcon />
-                        </IconButton>
-                    ) : null}                    
-                </TableRow> 
-            </React.Fragment>          
+            <TableRow key={index}>
+                {headers.map((field) => {
+                    const { value, align, style } = getField(row, field);
+                    return buildTableCell(value, align, style)
+                })}
+                {callbackDelete ? (
+                    <IconButton aria-label="delete" color="primary" onClick={() => callbackDelete(index)}>
+                        <DeleteIcon />
+                    </IconButton>
+                ) : null}                    
+            </TableRow>         
         )
     };
 
@@ -78,12 +77,12 @@ const SalesTable = (props) => {
                 </TableHead>
                 <TableBody>
                     {data.map((row, index) => (
-                        <Row row={row} index={index}/>
+                        <Row key={index} row={row} index={index}/>
                     ))}
                     
                     {bottomRowList && bottomRowList.length ? (
                         <TableRow>
-                            {bottomRowList.map((_bottomRow) => {
+                            {bottomRowList.map((_bottomRow, index) => {
                                 const bottomValue = formatedField(_bottomRow.value, _bottomRow['format'])
                                 return buildTableCell(bottomValue, _bottomRow.align, _bottomRow.style)
                             })}

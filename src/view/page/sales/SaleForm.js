@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Typography, Divider } from '@mui/material';
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress} from '@mui/material';
+import { CircularProgress} from '@mui/material';
 import { Box } from '@mui/material';
 import Select from '../../component/input-select/Select';
 import Datepicker from '../../component/input-datepicker/Datepicker';
 import Input from '../../component/input/Input';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { formatPrice } from '../../../application/util/moneyUtil';
 import dateUtil from '../../../application/util/dateUtil';
 import { fetchCustomer } from '../../../services/customer.service';
@@ -13,15 +12,13 @@ import { fetchSeller } from '../../../services/seller.service';
 import { fetchProducts } from '../../../services/product.service';
 import { fetchNewSale, fetchSaveSale, fetchSale } from '../../../services/sales.service';
 import useRouter from '../../../application/hook/useRouter';
+import SalesTable from '../../component/table/Table';
 
 import './sales.scss'
-import useIsMount from '../../../application/hook/useIsMount';
-import SalesTable from '../../component/table/Table';
 
 function SaleForm() {
     const styleRowProduct = { border: 0 };
     const router = useRouter();
-    const isMount = useIsMount();
     const { id } = router.params;
     const isEditing = id !== 'new';
     const formatDate = dateUtil.formatDate;
@@ -90,14 +87,15 @@ function SaleForm() {
 
     useEffect(() => {
         handleSelectOptions();
-        if (id !== 'new' && isMount){
+        if (id !== 'new'){
             fetchSale(id).then((res) => {
                 setForm({
                     ...res,
                     customer: {label: res.customer.name, value: res.customer.id},
                     seller: {label: res.seller.name, value: res.seller.id},
                     products: res.sale_products,
-                })
+                });
+                setTotal(res.total);
             })
         }
     }, [router.params]);
