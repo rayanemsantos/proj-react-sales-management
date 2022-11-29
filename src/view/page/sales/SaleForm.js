@@ -64,6 +64,7 @@ function SaleForm() {
                     seller: {label: res.seller.name, value: res.seller.id},
                     products: res.sale_products,
                 })
+                setTotal(res.total)
             })
         }
     }, [router.params]);
