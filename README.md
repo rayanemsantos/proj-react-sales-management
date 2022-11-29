@@ -13,7 +13,14 @@ Passo a passo para rodar o projeto local
 $ npm install
 $ npm start
 
-## Tela
+## Telas
+
+![1](https://raw.githubusercontent.com/rayanemsantos/proj-react-sales-management/main/prints/1.png)
+![2](https://raw.githubusercontent.com/rayanemsantos/proj-react-sales-management/main/prints/2.png)
+![3](https://raw.githubusercontent.com/rayanemsantos/proj-react-sales-management/main/prints/3.png)
+![4](https://raw.githubusercontent.com/rayanemsantos/proj-react-sales-management/main/prints/4.png)
+![5](https://raw.githubusercontent.com/rayanemsantos/proj-react-sales-management/main/prints/5.png)
+![6](https://raw.githubusercontent.com/rayanemsantos/proj-react-sales-management/main/prints/6.png)
 
 ## Funcionalidades
 
