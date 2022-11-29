@@ -41,4 +41,4 @@ Comissões
 - Implementar testes
 - Implementar ícones customizáveis
 - Implementar pesquisa, paginação e filtros.
-- Aplicar componente <SalesTable> na listagem principal
+- Aplicar componente SalesTable na listagem principal
