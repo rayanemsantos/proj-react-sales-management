@@ -6,10 +6,10 @@ import {
 import NavItems from './NavItems';
 import Header from '../header/Header';
 import './main-drawer.scss';
-import { useNavigate } from 'react-router-dom';
+import useRouter from '../../../application/hook/useRouter';
 
 const NavbarWrapper = () => {
-	const navigate = useNavigate();
+	const router = useRouter();
 	const drawerWidth = 273;
 	const [open, setOpen] = useState(false);
 	const [currentPage, setCurrentPage] = useState('');
@@ -38,7 +38,7 @@ const NavbarWrapper = () => {
 				}}
 			>				
 				<NavItems 
-					navigate={navigate} 
+					router={router} 
 					toggleDrawer={toggleDrawer}
 					onChangePage={setCurrentPage}
 				/>										

@@ -8,8 +8,9 @@ import dateUtil from '../../../application/util/dateUtil';
 import SalesDialog from '../../component/dialog/Dialog';
 
 const SalesList = () => {
+    const dialogInitialState = {open: false, id: null};
     const [items, setItems] = useState([]);
-    const [openConfirm, setOpenConfirm] = useState({open: false, id: null});
+    const [openConfirm, setOpenConfirm] = useState(dialogInitialState);
 
     
     const formatDate = dateUtil.formatDatePtBr;
@@ -21,9 +22,7 @@ const SalesList = () => {
     };
 
     function removeSale(id){
-        deleteSale(id).then((res) => {
-            setItems(res);
-        })
+        deleteSale(id);
     };
 
     
@@ -105,7 +104,7 @@ const SalesList = () => {
         return (
             <React.Fragment>
                 <TableRow key={index}>
-                    <TableCell align="left">{row.access_key}</TableCell>
+                    <TableCell align="left" style={{overflow: "hidden", textOverflow: "ellipsis", maxWidth: '1rem'}}>{row.access_key}</TableCell>
                     <TableCell align="left">{row.customer.name}</TableCell>
                     <TableCell align="left">{row.seller.name}</TableCell>
                     <TableCell align="center">{formatDate(new Date(row.register_datetime), 'dd/MM/yyyy HH:mm')}</TableCell>
@@ -138,7 +137,7 @@ const SalesList = () => {
     };
 
     function handleCloseDialog(){
-        setOpenConfirm(false);
+        setOpenConfirm(dialogInitialState);
     };
 
     return (
