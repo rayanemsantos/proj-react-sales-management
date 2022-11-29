@@ -7,7 +7,9 @@ import { formatPrice, formatDecimal } from '../../../application/util/moneyUtil'
 import dateUtil from '../../../application/util/dateUtil';
 import SalesDialog from '../../component/dialog/Dialog';
 
-const SalesList = () => {
+const SalesList = ({
+    onClickEdit
+}) => {
     const dialogInitialState = {open: false, id: null};
     const [items, setItems] = useState([]);
     const [openConfirm, setOpenConfirm] = useState(dialogInitialState);
@@ -111,7 +113,7 @@ const SalesList = () => {
                     <TableCell align="center">{formatPrice(row.total)}</TableCell>
                     <TableCell align="center">
                         <Button variant="text" onClick={() => setOpen(!open)}>Ver mais</Button>
-                        <IconButton aria-label="edit" color="primary">
+                        <IconButton aria-label="edit" color="primary" onClick={() => onClickEdit(row.id)}>
                             <EditIcon />
                         </IconButton>
                         <IconButton aria-label="delete" color="primary" onClick={() => setOpenConfirm({open: true, id: row.id})}>

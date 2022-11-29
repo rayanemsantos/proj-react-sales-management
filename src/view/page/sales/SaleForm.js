@@ -11,13 +11,17 @@ import dateUtil from '../../../application/util/dateUtil';
 import { fetchCustomer } from '../../../services/customer.service';
 import { fetchSeller } from '../../../services/seller.service';
 import { fetchProducts } from '../../../services/product.service';
-import { fetchNewSale } from '../../../services/sales.service';
+import { fetchNewSale, fetchSaveSale, fetchSale } from '../../../services/sales.service';
 import useRouter from '../../../application/hook/useRouter';
 
 import './sales.scss'
+import useIsMount from '../../../application/hook/useIsMount';
 
 function SaleForm() {
     const router = useRouter();
+    const isMount = useIsMount();
+    const { id } = router.params;
+    const isEditing = id !== 'new';
     const formatDate = dateUtil.formatDate;
 
     const initialCurrentProduct = {
@@ -51,8 +55,18 @@ function SaleForm() {
     };
 
     useEffect(() => {
-        handleSelectOptions()
-    }, []);
+        handleSelectOptions();
+        if (id !== 'new' && isMount){
+            fetchSale(id).then((res) => {
+                setForm({
+                    ...res,
+                    customer: {label: res.customer.name, value: res.customer.id},
+                    seller: {label: res.seller.name, value: res.seller.id},
+                    products: res.sale_products,
+                })
+            })
+        }
+    }, [router.params]);
 
     const productHeaders = [
         { title: 'Produtos/Serviço' },
@@ -116,6 +130,7 @@ function SaleForm() {
         const product = products.find((_p) => _p.id === currentProduct.product.value);
         
         let newProductList = [...form.products];
+
         let quantity = currentProduct.quantity;
 
         newProductList.push({
@@ -124,7 +139,7 @@ function SaleForm() {
             total: quantity * product.unit_price
         });
 
-        const sumTotal = newProductList.map((_sp) => _sp.total).reduce(
+        const sumTotal = newProductList.map((_sp) => parseFloat(_sp.total)).reduce(
             (accumulator, currentValue) => accumulator + currentValue, 0
         );       
         
@@ -140,18 +155,28 @@ function SaleForm() {
     };
 
     async function handleSave(){
+        let newProducts = form.products.filter(_p => _p.id === '').map((_p) => ({
+            quantity: parseInt(_p.quantity),
+            product: _p.product.id
+        }));
+
+        let products = form.products.filter(_p => _p.id !== '').map((_p) => ({
+            id: _p.id,
+            quantity: _p.quantity,
+            product: _p.product.id
+        }));
+
         let payload = {
             customer: form.customer.value,
             seller: form.seller.value,
-            register_datetime: formatDate(form.register_datetime, 'yyyy-MM-dd HH:mm:ss'),
-            products: form.products.map((_p) => ({
-                quantity: parseInt(_p.quantity),
-                product: _p.product.id
-            }))
+            products: [...newProducts, ...products]
+        }
+        if (!isEditing){
+            payload['register_datetime'] = formatDate(form.register_datetime, 'yyyy-MM-dd HH:mm:ss')
         }
         setLoading(true);
         try {
-            await fetchNewSale(payload);   
+            isEditing ? await fetchSaveSale(form.id, payload) : await fetchNewSale(payload)
             navToSales();
         } catch (error) {
             console.log(error)
@@ -243,6 +268,7 @@ function SaleForm() {
                             actionDateSelect={(ev) => handleChange('register_datetime', ev)}
                             disableOpenPicker
                             isDatetime
+                            disabled={isEditing}
                         />
                         <Select
                             currentValue={form.seller}
