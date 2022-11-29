@@ -26,7 +26,7 @@ const NavbarWrapper = () => {
 			<SwipeableDrawer
 				anchor='left'
 				open={open}
-				onOpen={null}
+				onOpen={() => null}
 				onClose={toggleDrawer}
 				BackdropProps={{ invisible: true }}
 				PaperProps={{

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { Collapse, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -24,10 +25,11 @@ const SalesList = ({
     };
 
     function removeSale(id){
-        deleteSale(id);
+        deleteSale(id).then(() => {
+            getSales();
+        })
     };
 
-    
     useEffect(() => {
         getSales();
         return () => {
@@ -54,7 +56,7 @@ const SalesList = ({
     ];
 
     const buildTableCell = (text = '', align = 'left', style = {}) => {
-        return <TableCell sx={style} align={align}>{text}</TableCell>
+        return <TableCell key={uuid()} sx={style} align={align}>{text}</TableCell>
     };
 
     function RowNested(props) {
@@ -104,38 +106,37 @@ const SalesList = ({
         const { row, index } = props;
         const [open, setOpen] = useState(false);
         return (
-            <React.Fragment>
-                <TableRow key={index}>
-                    <TableCell align="left" style={{overflow: "hidden", textOverflow: "ellipsis", maxWidth: '1rem'}}>{row.access_key}</TableCell>
-                    <TableCell align="left">{row.customer.name}</TableCell>
-                    <TableCell align="left">{row.seller.name}</TableCell>
-                    <TableCell align="center">{formatDate(new Date(row.register_datetime), 'dd/MM/yyyy HH:mm')}</TableCell>
-                    <TableCell align="center">{formatPrice(row.total)}</TableCell>
-                    <TableCell align="center">
-                        <Button variant="text" onClick={() => setOpen(!open)}>Ver mais</Button>
-                        <IconButton aria-label="edit" color="primary" onClick={() => onClickEdit(row.id)}>
-                            <EditIcon />
-                        </IconButton>
-                        <IconButton aria-label="delete" color="primary" onClick={() => setOpenConfirm({open: true, id: row.id})}>
-                            <DeleteIcon />
-                        </IconButton>                                                                
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell style={{ padding: 0, border: 0 }} colSpan={12}>
-                        <Collapse in={open} timeout="auto" unmountOnExit>
-                            <RowNested row={row}/>
-                        </Collapse>
-                    </TableCell>
-                </TableRow>   
-            </React.Fragment>          
+            <>
+            <TableRow key={index}>
+                <TableCell align="left" style={{overflow: "hidden", textOverflow: "ellipsis", maxWidth: '1rem'}}>{row.access_key}</TableCell>
+                <TableCell align="left">{row.customer.name}</TableCell>
+                <TableCell align="left">{row.seller.name}</TableCell>
+                <TableCell align="center">{formatDate(new Date(row.register_datetime), 'dd/MM/yyyy HH:mm')}</TableCell>
+                <TableCell align="center">{formatPrice(row.total)}</TableCell>
+                <TableCell align="center">
+                    <Button variant="text" onClick={() => setOpen(!open)}>Ver mais</Button>
+                    <IconButton aria-label="edit" color="primary" onClick={() => onClickEdit(row.id)}>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton aria-label="delete" color="primary" onClick={() => setOpenConfirm({open: true, id: row.id})}>
+                        <DeleteIcon />
+                    </IconButton>                                                                
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell style={{ padding: 0, border: 0 }} colSpan={12}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <RowNested key={uuid()} row={row}/>
+                    </Collapse>
+                </TableCell>
+            </TableRow>    
+            </>      
         )
     };
 
     async function handleConfirmDelete(){
         await removeSale(openConfirm.id);
         handleCloseDialog();
-        getSales();
     };
 
     function handleCloseDialog(){
@@ -166,7 +167,7 @@ const SalesList = ({
                 </TableHead>
                 <TableBody>
                     {items.map((row, index) => (
-                        <Row row={row} index={index}/>
+                        <Row key={uuid()} row={row} index={index}/>
                     ))}
                 </TableBody>
             </Table>
