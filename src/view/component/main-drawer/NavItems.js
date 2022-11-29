@@ -28,7 +28,7 @@ const NavItems = ({ router, toggleDrawer, onChangePage }) => {
         {
             title: 'Comissões',
             icon: <Calculate color='secondary'/>,
-            path: '/comissions'
+            path: '/commissions'
         }
     ];
 

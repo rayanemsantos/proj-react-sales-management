@@ -240,6 +240,9 @@ function SaleForm() {
                         <Datepicker
                             label='Data e Hora da Venda'
                             value={form.register_datetime}
+                            actionDateSelect={(ev) => handleChange('register_datetime', ev)}
+                            disableOpenPicker
+                            isDatetime
                         />
                         <Select
                             currentValue={form.seller}
