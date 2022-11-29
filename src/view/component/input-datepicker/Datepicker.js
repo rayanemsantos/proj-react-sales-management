@@ -7,7 +7,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ptBR from 'date-fns/locale/pt-BR';
 
 export default function SalesDatepicker(props) {
-    const { label, className = 'my-2', disableOpenPicker = false, isDatetime = false, actionDateSelect} = props;
+    const { label, className = 'my-2', disableOpenPicker = false, isDatetime = false, disabled = false, actionDateSelect} = props;
     const [value, setValue] = useState(new Date());
 
     const handleChange = (newValue) => {
@@ -29,6 +29,7 @@ export default function SalesDatepicker(props) {
                         onChange={handleChange}
                         renderInput={(params) => <TextField {...params} fullWidth size='small'/>}
                         disableOpenPicker={disableOpenPicker}
+                        disabled={disabled}
                     />
                 ) : (
                     <DatePicker

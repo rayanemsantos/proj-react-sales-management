@@ -11,6 +11,10 @@ function Sales() {
         router.goToPage('/sale/new')
     };
 
+    function handlEditSale(id){
+        router.goToPage('/sale/' + id)
+    };
+
     return (
         <Box     
             sx={{
@@ -31,7 +35,7 @@ function Sales() {
                 </Button>
             </div>      
 
-            <SalesList/>
+            <SalesList onClickEdit={handlEditSale}/>
         </Box>
     );
 }

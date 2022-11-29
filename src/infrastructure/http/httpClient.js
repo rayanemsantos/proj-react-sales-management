@@ -47,4 +47,21 @@ export function post(resource, body){
   })
 }
 
-export default { get, post, del };
+export function put(resource, body){
+  let url = `${URL_BASE}${resource}`
+  return fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+  }).then(async function (response) {
+    let resData = await response.json();
+    if (!response.ok) {
+      return Promise.reject(resData);
+    }    
+    return resData;
+  })
+}
+
+export default { get, post, del, put };
