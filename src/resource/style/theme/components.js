@@ -34,6 +34,16 @@ export default {
             }
         },
     },  
+    MuiInputBase: {
+        // input
+        styleOverrides: {
+            root: {
+                "&.MuiInputBase-input": {
+                    height: '1em'
+                },                 
+            }
+        }
+    }
     // MuiPaper: {
     //     styleOverrides: {
     //         root: {
