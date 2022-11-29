@@ -5,7 +5,6 @@ import dateUtil from '../../../application/util/dateUtil';
 
 const SalesTable = (props) => {
     const { headers = [], data = [], bottomRowList = []} = props;
-    const styleRowTotal = { border: 0, fontWeight: 600 };
     const formatDate = dateUtil.formatDate;
 
     const formatedField = (field, format) => {

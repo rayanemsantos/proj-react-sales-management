@@ -97,7 +97,7 @@ const CommissionsList = () => {
                         data={data}
                         bottomRowList={[
                             { value: 'Total de Comissões do Período', style: styleRowTotal },
-                            {value: '', style: styleRowTotal}, 
+                            { value: '', style: styleRowTotal }, 
                             { value: total, format: 'price', align: 'center', style: styleRowTotal }
                         ]}
                     />       
