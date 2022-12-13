@@ -32,15 +32,20 @@ const CommissionsList = () => {
     const [total, setTotal] = useState(0);
     const [init, setInit] = useState(new Date());
     const [end, setEnd] = useState(new Date());
+    const [loading, setLoading] = useState(false);
 
 
     function getSalesCommissions(){
         let initFormat = formatDate(init);
         let endFormat = formatDate(end);
-
+        setLoading(true);
         fetchSalesCommissions(initFormat, endFormat).then((res) => {
             setdata(res.results);
             setTotal(res.total);
+        }).finally(() => {
+            setTimeout(() => {
+                setLoading(false);
+            }, 1500)
         })
     };
     
@@ -100,6 +105,7 @@ const CommissionsList = () => {
                             { value: '', style: styleRowTotal }, 
                             { value: total, format: 'price', align: 'center', style: styleRowTotal }
                         ]}
+                        loading={loading}
                     />       
                 )
             }
