@@ -1,12 +1,13 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
+import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box } from '@mui/material';
+import LinearProgress from '@mui/material/LinearProgress';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { formatPrice } from '../../../application/util/moneyUtil';
 import dateUtil from '../../../application/util/dateUtil';
 
 const SalesTable = (props) => {
-    const { headers = [], data = [], bottomRowList = [], callbackDelete} = props;
+    const { headers = [], data = [], bottomRowList = [], loading = false, callbackDelete} = props;
     const formatDate = dateUtil.formatDate;
 
     const formatedField = (field, format) => {
@@ -63,9 +64,46 @@ const SalesTable = (props) => {
         )
     };
 
+    const renderTableLastRow = () => {
+        return (
+            bottomRowList && bottomRowList.length ? (
+                <TableRow>
+                    {bottomRowList.map((_bottomRow, index) => {
+                        const bottomValue = formatedField(_bottomRow.value, _bottomRow['format'])
+                        return buildTableCell(bottomValue, _bottomRow.align, _bottomRow.style)
+                    })}
+                </TableRow>
+            ) : null
+        )
+    };
+
+    const renderLoadingTable = () => {
+        return (
+            <TableRow>
+                <TableCell colSpan={12} sx={{border: 0}}>
+                    <Box sx={{ width: '100%', marginTop: 2, marginBottom: 2 }}>
+                        <LinearProgress/>
+                    </Box>
+                </TableCell>
+          </TableRow>
+        );
+    }
+
+    const renderEmptyList = () => {
+        return (<TableRow>{buildTableCell('Nenhum resultado encontrado', 'left', {border: 0})}</TableRow>);
+    };
+
+    const renderTableData = () => {
+        return (
+            data.map((row, index) => (
+                <Row key={index} row={row} index={index}/>
+            ))
+        )
+    };
+
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+            <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">      
                 <TableHead>
                     <TableRow>
                         {headers.map((_header) => {
@@ -76,18 +114,20 @@ const SalesTable = (props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((row, index) => (
-                        <Row key={index} row={row} index={index}/>
-                    ))}
-                    
-                    {bottomRowList && bottomRowList.length ? (
-                        <TableRow>
-                            {bottomRowList.map((_bottomRow, index) => {
-                                const bottomValue = formatedField(_bottomRow.value, _bottomRow['format'])
-                                return buildTableCell(bottomValue, _bottomRow.align, _bottomRow.style)
-                            })}
-                        </TableRow>
-                    ) : null}
+                    {
+                        data.length ? (
+                            <>
+                                {renderTableData()}
+                                {renderTableLastRow()}
+                            </>
+                        ) : (        
+                            loading ? (
+                                renderLoadingTable()
+                            ) : (
+                                renderEmptyList()
+                            )
+                        )
+                    }
                 </TableBody>
             </Table>
         </TableContainer>
