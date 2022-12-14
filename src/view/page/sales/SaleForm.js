@@ -125,18 +125,23 @@ function SaleForm() {
             total: quantity * product.unit_price
         });
 
-        const sumTotal = newProductList.map((_sp) => parseFloat(_sp.total)).reduce(
-            (accumulator, currentValue) => accumulator + currentValue, 0
-        );       
-        
-        setTotal(sumTotal);
+        calculateTotal(newProductList);
 
         handleChange('products',  newProductList);
         handleCleanCurrentProduct();
     };
 
+    function calculateTotal(newProductList){
+        const sumTotal = newProductList.map((_sp) => parseFloat(_sp.total)).reduce(
+            (accumulator, currentValue) => accumulator + currentValue, 0
+        );       
+        
+        setTotal(sumTotal);
+    };
+
     function handleRemoveProduct(i){
         let newProductList = form.products.filter((_p, index) => index !== i);
+        calculateTotal(newProductList);
         handleChange('products',  newProductList);
     };
 
@@ -214,6 +219,7 @@ function SaleForm() {
                             <Input
                                 label='Quantidade de itens'
                                 placeholder='0'
+                                type="number"
                                 value={currentProduct.quantity}
                                 onChange={(ev) => handleCurrentProduct('quantity', ev.target.value)}
                             />                                        
@@ -222,7 +228,7 @@ function SaleForm() {
                             <Button
                                 variant='contained' 
                                 className='my-2'
-                                disabled={currentProduct.product == '' || currentProduct.quantity === 0}
+                                disabled={currentProduct.product == '' || currentProduct.quantity == 0}
                                 onClick={handleAddProduct}
                             >
                                 Adicionar
