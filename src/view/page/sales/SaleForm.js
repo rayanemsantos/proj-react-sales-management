@@ -15,6 +15,7 @@ import useRouter from '../../../application/hook/useRouter';
 import SalesTable from '../../component/table/Table';
 
 import './sales.scss'
+import feedbackService from '../../../application/service/feedbackService';
 
 function SaleForm() {
     const styleRowProduct = { border: 0 };
@@ -168,6 +169,7 @@ function SaleForm() {
         setLoading(true);
         try {
             isEditing ? await fetchSaveSale(form.id, payload) : await fetchNewSale(payload)
+            isEditing ? feedbackService.showSuccessMessage('Venda alterada com sucesso') : feedbackService.showSuccessMessage('Venda registrada com sucesso')
             navToSales();
         } catch (error) {
             console.log(error)
