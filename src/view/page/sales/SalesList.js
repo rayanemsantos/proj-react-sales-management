@@ -7,6 +7,7 @@ import { fetchSales, deleteSale } from '../../../services/sales.service';
 import { formatPrice, formatDecimal } from '../../../application/util/moneyUtil';
 import dateUtil from '../../../application/util/dateUtil';
 import SalesDialog from '../../component/dialog/Dialog';
+import feedbackService from '../../../application/service/feedbackService';
 
 const SalesList = ({
     onClickEdit
@@ -136,6 +137,7 @@ const SalesList = ({
 
     async function handleConfirmDelete(){
         await removeSale(openConfirm.id);
+        feedbackService.showSuccessMessage('Venda deletada com sucesso')
         handleCloseDialog();
     };
 
