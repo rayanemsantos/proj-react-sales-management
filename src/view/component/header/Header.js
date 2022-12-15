@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Hidden,
 	IconButton,
 	Toolbar,
 	Typography,
@@ -30,7 +31,9 @@ const Header = ({toggleDrawer, currentPage = 'Vendas'}) => {
                 <MenuIcon color='primary'/>
             </IconButton>
             
-            <HeaderNavBarBrand/>            
+            <Hidden smDown>
+                <HeaderNavBarBrand/>            
+            </Hidden>
 
             <Typography 
                 variant="h5" 
