@@ -169,12 +169,13 @@ function SaleForm() {
         setLoading(true);
         try {
             isEditing ? await fetchSaveSale(form.id, payload) : await fetchNewSale(payload)
-            isEditing ? feedbackService.showSuccessMessage('Venda alterada com sucesso') : feedbackService.showSuccessMessage('Venda registrada com sucesso')
-            navToSales();
+            setTimeout(() => {
+                setLoading(false);
+                navToSales();
+                isEditing ? feedbackService.showSuccessMessage('Venda alterada com sucesso') : feedbackService.showSuccessMessage('Venda registrada com sucesso')
+            }, 1500);            
         } catch (error) {
             console.log(error)
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -193,7 +194,7 @@ function SaleForm() {
     return (
         <Box     
             sx={{
-                margin: 5,
+                margin: { sm: 5},
             }}
           >
             <div className='flex justify-content-between my-5'>
@@ -206,35 +207,38 @@ function SaleForm() {
                 </Typography>  
             </div>      
             <div className='row'>
-                <div className='col-md-7'>
+                <div className='col-md-7 col-12'>
                     <div className='flex align-items-end'>
-                        <div className='col-md-6'>
-                            <Select
-                                placeholder='Digite o código ou nome do produto'
-                                label='Buscar pelo código de barras ou descrição'
-                                options={products.map((_c) => {return {value: _c.id, label: _c.description}})}
-                                callback={(ev) => handleCurrentProduct('product', ev)}     
-                                value={currentProduct.product}                           
-                            />                        
-                        </div>
-                        <div className='col-md-5'>
-                            <Input
-                                label='Quantidade de itens'
-                                placeholder='0'
-                                type="number"
-                                value={currentProduct.quantity}
-                                onChange={(ev) => handleCurrentProduct('quantity', ev.target.value)}
-                            />                                        
-                        </div>
-                        <div className='col-md-1'>
-                            <Button
-                                variant='contained' 
-                                className='my-2'
-                                disabled={currentProduct.product == '' || currentProduct.quantity == 0}
-                                onClick={handleAddProduct}
-                            >
-                                Adicionar
-                            </Button>
+                        <div className='row align-items-end'>
+                            <div className='col-md-6 col-12'>
+                                <Select
+                                    placeholder='Digite o código ou nome do produto'
+                                    label='Buscar pelo código de barras ou descrição'
+                                    options={products.map((_c) => {return {value: _c.id, label: _c.description}})}
+                                    callback={(ev) => handleCurrentProduct('product', ev)}     
+                                    value={currentProduct.product}                           
+                                />                        
+                            </div>
+                            <div className='col-md-4 col-12'>
+                                <Input
+                                    label='Quantidade de itens'
+                                    placeholder='0'
+                                    type="number"
+                                    value={currentProduct.quantity}
+                                    onChange={(ev) => handleCurrentProduct('quantity', ev.target.value)}
+                                />                                        
+                            </div>
+                            <div className='col-md-2 col-6'>
+                                <Button
+                                    variant='contained' 
+                                    className='my-2'
+                                    disabled={currentProduct.product == '' || currentProduct.quantity == 0}
+                                    onClick={handleAddProduct}
+                                    fullWidth
+                                >
+                                    Adicionar
+                                </Button>
+                            </div>
                         </div>
                     </div>
 
@@ -306,7 +310,7 @@ function SaleForm() {
                                 variant='contained' 
                                 onClick={handleSave}
                                 disabled={!canBeSubmitted()}>
-                                {loading ?  <CircularProgress/> : 'Finalizar'}
+                                {loading ?  <CircularProgress size={20}/> : 'Finalizar'}
                             </Button>                        
                         </div> 
                     </div>                

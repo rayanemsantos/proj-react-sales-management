@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -7,11 +7,16 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ptBR from 'date-fns/locale/pt-BR';
 
 export default function SalesDatepicker(props) {
-    const { label, className = 'my-2', disableOpenPicker = false, isDatetime = false, disabled = false, actionDateSelect} = props;
-    const [value, setValue] = useState(new Date());
+    const { label, value, className = 'my-2', disableOpenPicker = false, isDatetime = false, disabled = false, actionDateSelect} = props;
+
+    const [selectedDate, setSelectedDate] = useState(value);
+
+    useEffect(() => {
+        setSelectedDate(value);
+    }, [value]);
 
     const handleChange = (newValue) => {
-        setValue(newValue);
+        setSelectedDate(newValue);
         if (actionDateSelect) actionDateSelect(newValue);
     };
 
@@ -25,7 +30,7 @@ export default function SalesDatepicker(props) {
                 isDatetime ? (
                     <DateTimePicker
                         className={`${className} my-2`}
-                        value={value}
+                        value={selectedDate}
                         onChange={handleChange}
                         renderInput={(params) => <TextField {...params} fullWidth size='small'/>}
                         disableOpenPicker={disableOpenPicker}
@@ -34,7 +39,7 @@ export default function SalesDatepicker(props) {
                 ) : (
                     <DatePicker
                         className={`${className} my-2`}
-                        value={value}
+                        value={selectedDate}
                         onChange={handleChange}
                         renderInput={(params) => <TextField {...params} fullWidth size='small'/>}
                         disableOpenPicker={disableOpenPicker}
